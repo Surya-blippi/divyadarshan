@@ -127,7 +127,8 @@
   .stp.active .lb{color:var(--maroon)}
   .stp.done .num{background:var(--ok);color:#fff}
   .stp.done .bar{background:var(--ok)}
-  @media(max-width:720px){.stp .lb{display:none}.stp{flex:0 0 auto}.stp .bar{min-width:14px}}
+  @media(max-width:720px){.stp{flex:1}.stp .num{width:26px;height:26px;font-size:.78rem}.stp .lb{font-size:.72rem}.stp .bar{min-width:8px;margin:0 2px}}
+  @media(max-width:400px){.stp .lb{display:none}.stp{flex:0 0 auto}.stp .bar{min-width:14px}}
 
   .wz-body{display:grid;grid-template-columns:1fr 320px;gap:0}
   @media(max-width:860px){.wz-body{grid-template-columns:1fr}}
@@ -308,6 +309,33 @@
   .disclaimer{font-size:.72rem;color:#a97c4f;max-width:660px;margin:8px auto 0;text-align:center}
 
 
+  /* ---------- Pricing section ---------- */
+  .pricing-sec{background:linear-gradient(180deg,#fff8ef,#ffeede)}
+  .price-cards{display:grid;grid-template-columns:repeat(2,minmax(0,380px));gap:26px;justify-content:center;margin-top:48px}
+  @media(max-width:720px){.price-cards{grid-template-columns:1fr;max-width:400px;margin-left:auto;margin-right:auto}}
+  .pcard{background:#fff;border:1.5px solid var(--line);border-radius:var(--r-lg);padding:34px 28px;text-align:center;position:relative;box-shadow:var(--shadow-sm);transition:transform .18s}
+  .pcard:hover{transform:translateY(-6px)}
+  .pcard.featured{border-color:var(--marigold);box-shadow:0 0 0 3px rgba(255,179,0,.25),var(--shadow)}
+  .pc-pop{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--marigold);color:var(--deep);font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 14px;border-radius:20px;white-space:nowrap}
+  .pc-ico{font-size:2rem}
+  .pcard h3{font-size:1.25rem;color:var(--maroon);margin-top:10px}
+  .pc-price{font-family:'Fraunces';font-size:3rem;color:var(--deep);margin-top:6px;line-height:1}
+  .pc-price small{font-size:.95rem;color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif;font-weight:600}
+  .pc-was{margin-top:8px;font-size:.88rem;color:var(--saffron-d);font-weight:700}
+  .pc-was s{color:var(--muted);font-weight:500}
+  .pcard ul{list-style:none;margin:20px 0 24px;text-align:left}
+  .pcard li{padding:8px 0 8px 26px;position:relative;font-size:.92rem;color:#5c3d20;border-bottom:1px dashed var(--line)}
+  .pcard li:last-child{border-bottom:none}
+  .pcard li:before{content:"✓";position:absolute;left:2px;color:var(--ok);font-weight:800}
+  .pcard .btn{width:100%;justify-content:center}
+
+  /* ---------- Mobile sticky CTA bar ---------- */
+  .mobile-cta{position:fixed;left:0;right:0;bottom:0;z-index:65;display:none;align-items:center;justify-content:space-between;gap:12px;background:rgba(255,248,239,.97);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));box-shadow:0 -8px 30px rgba(90,30,0,.14);transition:transform .3s ease}
+  .mobile-cta.hide{transform:translateY(110%)}
+  .mobile-cta .mc-txt{font-size:.82rem;color:var(--muted);font-weight:600;line-height:1.3}
+  .mobile-cta .mc-txt b{color:var(--maroon);font-family:'Fraunces';font-size:1.2rem;margin-right:2px}
+  .mobile-cta .btn{padding:12px 22px;font-size:.92rem;flex:0 0 auto}
+
   /* ---------- Language toggle ---------- */
   .lang-btn{background:#fff;border:1.5px solid var(--line);color:var(--maroon);font-weight:700;font-size:.82rem;padding:9px 14px;border-radius:50px;cursor:pointer;transition:.16s;display:inline-flex;align-items:center;gap:6px}
   .lang-btn:hover{border-color:var(--saffron);color:var(--saffron-d)}
@@ -373,6 +401,11 @@
     .brand small{display:none}
     .t-cap{display:none}
     .stp .num{width:28px;height:28px;font-size:.82rem}
+  }
+  /* mobile sticky bar activation (kept last so overrides win) */
+  @media(max-width:600px){
+    .mobile-cta{display:flex}
+    footer{padding-bottom:96px}
   }
   /* respect users who reduce motion */
   @media(prefers-reduced-motion:reduce){
@@ -583,7 +616,7 @@
 
 <!-- ===== Urgency ribbon ===== -->
 <div class="ribbon" id="ribbon">
-  <span id="ribbonTxt">🪔 <b>Sawan / Shravan special</b> — up to <b>35% OFF</b> divine portraits this holy month · Hand-crafted with devotion</span>
+  <span id="ribbonTxt">🪔 <b>Sawan / Shravan special</b> — divine portraits from just <b>₹30</b> · All 12 Jyotirlingas <b>₹299</b> · Free preview, pay only when you love it</span>
   <button class="x" onclick="document.getElementById('ribbon').remove()" aria-label="close">×</button>
 </div>
 
@@ -594,6 +627,7 @@
     <nav><ul>
       <li><a href="#how">How it works</a></li>
       <li><a href="#gallery">Examples</a></li>
+      <li><a href="#pricing">Pricing</a></li>
       <li><a href="#uses">Who it's for</a></li>
       <li><a href="#reviews">Reviews</a></li>
       <li><a href="#faq">FAQ</a></li>
@@ -614,6 +648,7 @@
   <div class="wrap hero-grid">
     <div>
       <div class="hero-badges">
+        <span class="chip"><span class="s">✨</span> From just ₹30</span>
         <span class="chip"><span class="s">★</span> 4.9/5 from 3,000+ devotees</span>
         <span class="chip">🕐 Delivered in 24–48 hrs</span>
       </div>
@@ -676,6 +711,19 @@
     <div class="item"><b>4.9★</b><span>DEVOTEE RATING</span></div>
   </div>
 </div>
+
+<!-- ===== How it works ===== -->
+<section id="how">
+  <div class="wrap">
+    <p class="eyebrow center">The Journey</p>
+    <h2 class="sec-title center">Simple for you, sacred in result</h2>
+    <div class="steps3">
+      <div class="s3"><div class="ic">📤</div><h3>1. Share a photo</h3><p>Upload a picture of yourself, your family, or a loved one you wish to honour.</p></div>
+      <div class="s3"><div class="ic">🛕</div><h3>2. Pick your idols</h3><p>Choose one or many — Kedarnath, Kashi, Jagannath… or take all 12 Jyotirlingas as a ₹299 pack.</p></div>
+      <div class="s3"><div class="ic">🪔</div><h3>3. Receive the magic</h3><p>Our artists place you at the shrine with divine light, delivered to your WhatsApp &amp; email in 24–48h.</p></div>
+    </div>
+  </div>
+</section>
 
 <!-- ===== WIZARD / CREATE ===== -->
 <section id="create" class="studio">
@@ -760,6 +808,10 @@
               </div>
             </div>
             <div class="field"><label>Special instructions <span style="color:var(--muted);font-weight:400">(optional)</span></label><textarea id="fNotes" rows="2" placeholder="Any mood, colours or details for our artists…"></textarea></div>
+            <div class="guarantee">
+              <span style="font-size:1.2rem">🛡️</span>
+              <div><b>100% risk-free.</b> We send a preview within 24–48h. You pay <b>only after you approve it</b> — simply via UPI — or your money back, no questions asked.</div>
+            </div>
           </div>
         </div>
 
@@ -810,19 +862,6 @@
   </div>
 </section>
 
-<!-- ===== How it works ===== -->
-<section id="how">
-  <div class="wrap">
-    <p class="eyebrow center">The Journey</p>
-    <h2 class="sec-title center">Simple for you, sacred in result</h2>
-    <div class="steps3">
-      <div class="s3"><div class="ic">📤</div><h3>1. Share a photo</h3><p>Upload a picture of yourself, your family, or a loved one you wish to honour.</p></div>
-      <div class="s3"><div class="ic">🛕</div><h3>2. Pick a temple</h3><p>Choose from the 12 Jyotirlingas, Jagannath Puri, Tirupati, and more sacred shrines.</p></div>
-      <div class="s3"><div class="ic">🪔</div><h2>3. Receive the magic</h2><p>Our artists place you at the shrine with divine light, delivered directly to your WhatsApp &amp; email in 24–48h.</p></div>
-    </div>
-  </div>
-</section>
-
 <!-- ===== Examples gallery ===== -->
 <section id="gallery" class="uc">
   <div class="wrap">
@@ -831,6 +870,43 @@
     <p class="sec-sub center">Darshan of all 12 Jyotirlingas and India's most beloved deities — real idol images, ready for your portrait.</p>
     <div class="gal" id="galGrid"></div>
     <div class="center" style="margin-top:34px"><a href="#create"><button class="btn btn-primary">Place Me at a Temple →</button></a></div>
+  </div>
+</section>
+
+<!-- ===== Pricing ===== -->
+<section id="pricing" class="pricing-sec">
+  <div class="wrap">
+    <p class="eyebrow center">Simple Pricing</p>
+    <h2 class="sec-title center">One photo. Any idol. ₹30.</h2>
+    <p class="sec-sub center">No packages, no confusion — pay only for the idols you choose. Pick all 12 Jyotirlingas and the pack price applies automatically.</p>
+    <div class="price-cards">
+      <div class="pcard">
+        <div class="pc-ico">🛕</div>
+        <h3>Per Idol</h3>
+        <div class="pc-price">₹30<small> /idol</small></div>
+        <ul>
+          <li>1 divine portrait per idol</li>
+          <li>HD, download-ready image</li>
+          <li>Free preview before you pay</li>
+          <li>Delivered in 24–48 hours</li>
+        </ul>
+        <a href="#create"><button class="btn btn-ghost">Start with one →</button></a>
+      </div>
+      <div class="pcard featured">
+        <span class="pc-pop">Best Value</span>
+        <div class="pc-ico">🕉️</div>
+        <h3>All 12 Jyotirlingas</h3>
+        <div class="pc-price">₹299<small> pack</small></div>
+        <div class="pc-was"><s>₹360</s> · save ₹61</div>
+        <ul>
+          <li>12 divine portraits — complete darshan</li>
+          <li>HD, download-ready images</li>
+          <li>Free preview before you pay</li>
+          <li>Priority delivery</li>
+        </ul>
+        <a href="#create"><button class="btn btn-primary">Get the pack →</button></a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -879,13 +955,13 @@
     <p class="eyebrow center">Questions?</p>
     <h2 class="sec-title center">Everything you need to know</h2>
     <div class="faq" id="faqList">
-      <div class="fq"><button>How and when is the portrait delivered? <span class="pl">+</span></button><div class="a"><p>Once you complete your order details, a dedicated artist is assigned to hand-craft your portrait. Your high-resolution divine portrait is delivered directly to your WhatsApp and email within 24–48 hours.</p></div></div>
-      <div class="fq"><button>Is this a real edit or just a filter? <span class="pl">+</span></button><div class="a"><p>Every portrait is <b>hand-crafted by a real artist</b> — we carefully blend your photo into the temple with matching light, shadows and mood. It's not an automated filter.</p></div></div>
-      <div class="fq"><button>How will I receive my portrait? <span class="pl">+</span></button><div class="a"><p>You'll get it on <b>WhatsApp and email</b> as a high-resolution, download-ready image. Tribute &amp; Family packages also include a print- and frame-ready file.</p></div></div>
-      <div class="fq"><button>How long does it take? <span class="pl">+</span></button><div class="a"><p>Standard delivery is <b>24–48 hours</b>. Family and Tribute packages get <b>priority 24-hour</b> turnaround.</p></div></div>
+      <div class="fq"><button>How much does it cost? <span class="pl">+</span></button><div class="a"><p>Just <b>₹30 per idol</b> — one divine portrait with each idol you choose. Want the complete darshan? All <b>12 Jyotirlingas for ₹299</b> (save ₹61). Free preview first; pay simply via UPI only after you approve.</p></div></div>
+      <div class="fq"><button>How and when is the portrait delivered? <span class="pl">+</span></button><div class="a"><p>Once you complete your order, a dedicated artist hand-crafts your portrait. The high-resolution image is delivered directly to your <b>WhatsApp and email within 24–48 hours</b>, download-ready.</p></div></div>
+      <div class="fq"><button>Is this a real edit or just a filter? <span class="pl">+</span></button><div class="a"><p>Every portrait is <b>hand-crafted by a real artist</b> — we carefully blend your photo into the shrine with matching light, shadows and mood. It's not an automated filter.</p></div></div>
+      <div class="fq"><button>Can I choose more than one idol? <span class="pl">+</span></button><div class="a"><p>Yes — pick as many as you like at <b>₹30 each</b>, and you'll receive a separate divine portrait with every idol. Select all 12 Jyotirlingas and the <b>₹299 pack price</b> applies automatically.</p></div></div>
       <div class="fq"><button>Is my photo safe and private? <span class="pl">+</span></button><div class="a"><p>Absolutely. Your photo is used only to create your portrait, is <b>never shared or sold</b>, and is deleted from our systems after delivery.</p></div></div>
-      <div class="fq"><button>Can I add my whole family or a group? <span class="pl">+</span></button><div class="a"><p>Yes! The Parivaar package supports up to 5 people. Share a group photo or a few individual ones and we'll bring everyone together at the shrine.</p></div></div>
-      <div class="fq"><button>Which temples can I choose? <span class="pl">+</span></button><div class="a"><p>All <b>12 Jyotirlingas</b> (Shiva Lingam) plus beloved deities like Jagannath of Puri, Lord Venkateswara (Tirupati) and Meenakshi Amman. Want a specific deity or temple not listed? Just ask on WhatsApp.</p></div></div>
+      <div class="fq"><button>Can I add my whole family or a group? <span class="pl">+</span></button><div class="a"><p>Yes! Share a group photo — or a few individual ones — and we'll bring everyone together at the shrine. The price stays the same: ₹30 per idol.</p></div></div>
+      <div class="fq"><button>Which idols can I choose? <span class="pl">+</span></button><div class="a"><p>All <b>12 Jyotirlingas</b> (Shiva Lingam) plus beloved deities like Jagannath of Puri, Lord Venkateswara (Tirupati) and Meenakshi Amman. Want a specific deity not listed? Just ask on WhatsApp.</p></div></div>
     </div>
   </div>
 </section>
@@ -923,6 +999,11 @@
   <div class="copy">© 2026 DivyaDarshan · Made with devotion in India 🇮🇳</div>
 </footer>
 
+<!-- Mobile sticky CTA -->
+<div class="mobile-cta hide" id="mobileCta">
+  <div class="mc-txt"><b>₹30</b>/idol · Free preview first</div>
+  <a href="#create"><button class="btn btn-primary">Create →</button></a>
+</div>
 
 <script>
 /* ============ Temple data (real photos, verified) ============ */
@@ -997,7 +1078,7 @@ function renderGallery(){
   temples.slice(0,12).forEach(t=>{
     const c=document.createElement('div');c.className='gcell';
     c.innerHTML=`<img loading="lazy" src="${t.img}" alt="${t.deity} at ${t.name}" onerror="this.onerror=null;this.src='${FALLBACK}'"><span>${L(t.name)}</span>`;
-    c.onclick=()=>{ if(!state.temples.some(x=>x.name===t.name)) state.temples.push(t); renderTemples(currentCat,''); updateSummary(); updateNav(); goTo(2); location.hash='#create'; };
+    c.onclick=()=>{ if(!state.temples.some(x=>x.name===t.name)) state.temples.push(t); renderTemples(currentCat,''); updateSummary(); updateNav(); goTo(state.photo ? 2 : 1); location.hash='#create'; };
     g.appendChild(c);
   });
 }
@@ -1079,7 +1160,9 @@ function updateNav(){
   $('btnBack').style.visibility = step>1 ? 'visible':'hidden';
   const ok=stepValid(step);
   $('btnNext').disabled = !ok;
-  $('btnNext').textContent = step===TOTAL ? L('🪔 Place My Order') : L('Continue →');
+  let nxt = step===TOTAL ? L('🪔 Place My Order') : L('Continue →');
+  if(step===2 && ok){ const pbn=priceBreakdown(); if(pbn.total>0) nxt = nxt.replace(' →',' · ₹'+pbn.total+' →'); }
+  $('btnNext').textContent = nxt;
   const hints={1:L('Upload a photo to continue'),2:L('Select at least one idol to continue'),3:''};
   if(!ok) {
     $('wzHint').textContent = hints[step]||'';
@@ -1109,6 +1192,8 @@ updateStepper();updateNav();
 
 /* ---- Submit ---- */
 function submitOrder(){
+  if(!state.photo){ alert(LANG==='hi'?'कृपया पहले अपनी फ़ोटो अपलोड करें। 🖼️':'Please upload your photo first. 🖼️'); goTo(1); return; }
+  if(state.temples.length===0){ alert(LANG==='hi'?'कृपया कम से कम एक मूर्ति चुनें। 🛕':'Please select at least one idol. 🛕'); goTo(2); return; }
   const name=$('fName').value.trim();
   if(!name){ alert(LANG==='hi'?'कृपया अपना नाम भरें ताकि हम ऑर्डर किसे भेजें यह पता चले। 🙏':'Please enter your name so we know who to send the order to. 🙏'); $('fName').focus(); return; }
   if(!$('fPhone').value.trim()){ alert(LANG==='hi'?'ऑर्डर पाने के लिए कृपया WhatsApp नंबर डालें। 📱':'Please add a WhatsApp number to receive your order. 📱'); $('fPhone').focus(); return; }
@@ -1184,12 +1269,12 @@ function L(s){ return (LANG==='hi' && typeof HI==='object' && HI[s]) ? HI[s] : s
 const q = s => [...document.querySelectorAll(s)];
 const htmlCache = new Map(), phCache = new Map();
 const T = [
-  {sel:'#ribbonTxt', hi:'🪔 <b>सावन स्पेशल</b> — इस पवित्र महीने दिव्य तस्वीरों पर <b>35% तक छूट</b> · श्रद्धा से निर्मित'},
-  {sel:'header nav ul a', list:['कैसे काम करता है','उदाहरण','किसके लिए','समीक्षाएँ','सवाल-जवाब']},
+  {sel:'#ribbonTxt', hi:'🪔 <b>सावन स्पेशल</b> — दिव्य तस्वीरें सिर्फ़ <b>₹30</b> से · सभी 12 ज्योतिर्लिंग <b>₹299</b> · पहले मुफ़्त झलक, पसंद आने पर ही पैसे'},
+  {sel:'header nav ul a', list:['कैसे काम करता है','उदाहरण','दाम','किसके लिए','समीक्षाएँ','सवाल-जवाब']},
   {sel:'.brand small', hi:'दिव्य तस्वीरें'},
   {sel:'.nav-cta', hi:'अपनी बनवाएँ →'},
   // hero
-  {sel:'.hero-badges .chip', list:['<span class="s">★</span> 3,000+ भक्तों से 4.9/5','🕐 24–48 घंटे में तैयार']},
+  {sel:'.hero-badges .chip', list:['<span class="s">✨</span> सिर्फ़ ₹30 से','<span class="s">★</span> 3,000+ भक्तों से 4.9/5','🕐 24–48 घंटे में तैयार']},
   {sel:'.hero-h', hi:'अपनों को पहुँचाएँ <em>भगवान</em> के चरणों में'},
   {sel:'.hero .lead', hi:"मंदिर नहीं जा पा रहे? हम आपको, आपके परिवार या अपनों को भारत के सबसे पवित्र मंदिरों में विराजमान करते हैं — 12 ज्योतिर्लिंग, जगन्नाथ पुरी और भी बहुत कुछ। कलाकारों द्वारा हाथ से बनाई, सीधे आपके फ़ोन पर।"},
   {sel:'.hero-cta .btn-primary', hi:'🪔 अपनी तस्वीर बनवाएँ'},
@@ -1222,6 +1307,7 @@ const T = [
   {sel:'[data-pane="3"] .pane-h', hi:'आपकी दिव्य तस्वीर कहाँ भेजें?'},
   {sel:'[data-pane="3"] .pane-sub', hi:'हम आपकी दिव्य तस्वीर 24–48 घंटे में WhatsApp और ईमेल पर भेजेंगे।'},
   {sel:'[data-pane="3"] .field label', list:['पूरा नाम','WhatsApp नंबर','ईमेल <span style="color:var(--muted);font-weight:400">(वैकल्पिक)</span>','अवसर <span style="color:var(--muted);font-weight:400">(वैकल्पिक)</span>','ख़ास निर्देश <span style="color:var(--muted);font-weight:400">(वैकल्पिक)</span>']},
+  {sel:'.guarantee div', hi:'<b>100% जोखिम-मुक्त।</b> हम 24–48 घंटे में झलक भेजते हैं। आप <b>मंज़ूरी के बाद ही</b> — सीधे UPI से — पैसे देते हैं, या पूरा पैसा वापस, बिना कोई सवाल।'},
   {sel:'#fName', ph:'जैसे आरव शर्मा'},
   {sel:'#fNotes', ph:'कलाकारों के लिए कोई भाव, रंग या ब्यौरा…'},
   {sel:'#fOcc option', list:['चुनें…','निजी दर्शन','माता-पिता / बड़ों के लिए उपहार','किसी अपने की याद में','त्योहार / ख़ास दिन','विदेश में, घर की याद']},
@@ -1239,13 +1325,26 @@ const T = [
   // how
   {sel:'#how .eyebrow', hi:'सफ़र'},
   {sel:'#how .sec-title', hi:'आपके लिए आसान, नतीजा दिव्य'},
-  {sel:'#how .s3 h3', list:['1. फ़ोटो भेजें','2. मंदिर चुनें','3. जादू पाएँ']},
-  {sel:'#how .s3 p', list:['अपनी, अपने परिवार या किसी अपने की फ़ोटो अपलोड करें।','12 ज्योतिर्लिंग, जगन्नाथ पुरी, तिरुपति और कई पावन मंदिरों में से चुनें।','हमारे कलाकार आपको दिव्य रोशनी के साथ मंदिर में विराजमान करते हैं। 24–48 घंटे में सीधी डिलीवरी आपके WhatsApp और ईमेल पर।']},
+  {sel:'#how .s3 h3', list:['1. फ़ोटो भेजें','2. मूर्तियाँ चुनें','3. जादू पाएँ']},
+  {sel:'#how .s3 p', list:['अपनी, अपने परिवार या किसी अपने की फ़ोटो अपलोड करें।','एक या कई चुनें — केदारनाथ, काशी, जगन्नाथ… या सभी 12 ज्योतिर्लिंग ₹299 के पैक में।','हमारे कलाकार आपको दिव्य रोशनी के साथ मंदिर में विराजमान करते हैं। 24–48 घंटे में सीधे आपके WhatsApp और ईमेल पर।']},
   // gallery
   {sel:'#gallery .eyebrow', hi:'पावन गैलरी'},
   {sel:'#gallery .sec-title', hi:'जिन देवताओं के सामने आप खड़े होंगे'},
   {sel:'#gallery .sec-sub', hi:'सभी 12 ज्योतिर्लिंग और भारत के सबसे प्रिय देवताओं के दर्शन — असली मूर्ति तस्वीरें, आपकी तस्वीर के लिए तैयार।'},
   {sel:'#gallery .btn-primary', hi:'मुझे मंदिर में विराजमान करें →'},
+  // pricing
+  {sel:'#pricing .eyebrow', hi:'सीधा-सादा दाम'},
+  {sel:'#pricing .sec-title', hi:'एक फ़ोटो। कोई भी मूर्ति। ₹30।'},
+  {sel:'#pricing .sec-sub', hi:'न पैकेज, न उलझन — सिर्फ़ चुनी मूर्तियों का ही दाम। सभी 12 ज्योतिर्लिंग चुनें तो पैक का दाम अपने आप लग जाता है।'},
+  {sel:'.pcard h3', list:['प्रति मूर्ति','सभी 12 ज्योतिर्लिंग']},
+  {sel:'.pc-price small', list:[' /मूर्ति',' पैक']},
+  {sel:'.pc-was', hi:'<s>₹360</s> · ₹61 की बचत'},
+  {sel:'.pc-pop', hi:'सबसे किफ़ायती'},
+  {sel:'.pcard li', list:['हर मूर्ति के साथ 1 दिव्य तस्वीर','HD, डाउनलोड के लिए तैयार','पैसे से पहले मुफ़्त झलक','24–48 घंटे में डिलीवरी','12 दिव्य तस्वीरें — पूरा दर्शन','HD, डाउनलोड के लिए तैयार','पैसे से पहले मुफ़्त झलक','प्राथमिकता डिलीवरी']},
+  {sel:'.pcard .btn', list:['एक से शुरू करें →','पैक लें →']},
+  // mobile sticky bar
+  {sel:'.mobile-cta .mc-txt', hi:'<b>₹30</b>/मूर्ति · पहले मुफ़्त झलक'},
+  {sel:'.mobile-cta .btn', hi:'बनवाएँ →'},
   // uses
   {sel:'#uses .eyebrow', hi:'दिल से बनाया, इनके लिए'},
   {sel:'#uses .sec-title', hi:'वो पल जो दिव्यता के हक़दार हैं'},
@@ -1262,21 +1361,21 @@ const T = [
   {sel:'#faq .eyebrow', hi:'सवाल?'},
   {sel:'#faq .sec-title', hi:'जो कुछ आप जानना चाहें'},
   {sel:'.fq button', list:[
+    'इसका दाम कितना है? <span class="pl">+</span>',
     'तस्वीर कैसे और कब डिलीवर होगी? <span class="pl">+</span>',
     'क्या यह असली एडिट है या सिर्फ़ फ़िल्टर? <span class="pl">+</span>',
-    'मुझे तस्वीर कैसे मिलेगी? <span class="pl">+</span>',
-    'कितना समय लगता है? <span class="pl">+</span>',
+    'क्या मैं एक से ज़्यादा मूर्तियाँ चुन सकता हूँ? <span class="pl">+</span>',
     'क्या मेरी फ़ोटो सुरक्षित और निजी है? <span class="pl">+</span>',
     'क्या मैं पूरा परिवार या समूह जोड़ सकता हूँ? <span class="pl">+</span>',
-    'मैं कौन-कौन से मंदिर चुन सकता हूँ? <span class="pl">+</span>' ]},
+    'मैं कौन-कौन सी मूर्तियाँ चुन सकता हूँ? <span class="pl">+</span>' ]},
   {sel:'.fq .a p', list:[
-    'ऑर्डर पूरा होते ही एक समर्पित कलाकार आपकी तस्वीर बनाने में जुट जाता है। आपकी उच्च-रिज़ॉल्यूशन दिव्य तस्वीर 24–48 घंटे में सीधे WhatsApp और ईमेल पर भेज दी जाती है।',
+    'सिर्फ़ <b>₹30 प्रति मूर्ति</b> — हर चुनी मूर्ति के साथ एक दिव्य तस्वीर। पूरा दर्शन चाहिए? सभी <b>12 ज्योतिर्लिंग ₹299 में</b> (₹61 की बचत)। पहले मुफ़्त झलक; मंज़ूरी के बाद ही UPI से पैसे।',
+    'ऑर्डर पूरा होते ही एक समर्पित कलाकार आपकी तस्वीर बनाने में जुट जाता है। हाई-रिज़ॉल्यूशन तस्वीर <b>24–48 घंटे में सीधे WhatsApp और ईमेल</b> पर, डाउनलोड के लिए तैयार।',
     'हर तस्वीर <b>असली कलाकार हाथ से बनाते हैं</b> — हम आपकी फ़ोटो को मिलते-जुलते उजाले, परछाई और भाव के साथ मंदिर में जोड़ते हैं। यह कोई ऑटोमैटिक फ़िल्टर नहीं।',
-    'आपको <b>WhatsApp और ईमेल</b> पर हाई-रिज़ॉल्यूशन, डाउनलोड के लिए तैयार तस्वीर मिलेगी। श्रद्धांजलि और परिवार पैकेज में प्रिंट व फ्रेम के लिए तैयार फ़ाइल भी।',
-    'सामान्य डिलीवरी <b>24–48 घंटे</b> है। परिवार और श्रद्धांजलि पैकेज को <b>प्राथमिकता वाली 24 घंटे</b> की डिलीवरी मिलती है।',
+    'हाँ — जितनी चाहें चुनें, <b>₹30 प्रति मूर्ति</b>, और हर मूर्ति के साथ आपको अलग दिव्य तस्वीर मिलेगी। सभी 12 ज्योतिर्लिंग चुनने पर <b>₹299 का पैक दाम</b> अपने आप लग जाता है।',
     'बिल्कुल। आपकी फ़ोटो सिर्फ़ तस्वीर बनाने के लिए इस्तेमाल होती है, <b>कभी साझा या बेची नहीं जाती</b>, और डिलीवरी के बाद हमारे सिस्टम से हटा दी जाती है।',
-    'हाँ! परिवार पैकेज में 5 लोगों तक। एक ग्रुप फ़ोटो या कुछ अलग-अलग फ़ोटो भेजें, हम सबको मंदिर में एक साथ ले आएँगे।',
-    'सभी <b>12 ज्योतिर्लिंग</b> (शिवलिंग) के साथ पुरी के जगन्नाथ, तिरुपति के वेंकटेश्वर और मीनाक्षी अम्मन जैसे प्रिय देवता। कोई ख़ास देवता या मंदिर सूची में नहीं? बस WhatsApp पर बताएँ।' ]},
+    'हाँ! एक ग्रुप फ़ोटो — या कुछ अलग-अलग फ़ोटो — भेजें, हम सबको मंदिर में एक साथ ले आएँगे। दाम वही रहता है: ₹30 प्रति मूर्ति।',
+    'सभी <b>12 ज्योतिर्लिंग</b> (शिवलिंग) के साथ पुरी के जगन्नाथ, तिरुपति के वेंकटेश्वर और मीनाक्षी अम्मन जैसे प्रिय देवता। कोई ख़ास देवता सूची में नहीं? बस WhatsApp पर बताएँ।' ]},
   // final CTA
   {sel:'.final h2', hi:'उनके दर्शन बस एक फ़ोटो दूर हैं'},
   {sel:'.final p', hi:'12,000+ परिवारों के साथ जुड़ें जिन्होंने अपनों को भगवान तक पहुँचाया। श्रद्धा और भक्ति से निर्मित।'},
@@ -1328,11 +1427,12 @@ try{ if(localStorage.getItem('dd_lang')==='hi') applyLang('hi'); }catch(_){}
    Subtle scroll-reveal animations
    ============================================================ */
 if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
-  ['.steps3 .s3','.ucg .uccard','.tst .quote','.gal .gcell','.faq .fq'].forEach(gsel=>{
+  ['.steps3 .s3','.ucg .uccard','.tst .quote','.gal .gcell','.faq .fq','.price-cards .pcard'].forEach(gsel=>{
     document.querySelectorAll(gsel).forEach((el,i)=>{ el.style.transitionDelay=(i*70)+'ms'; });
   });
-  const revealSel='.s3,.uccard,.quote,.fq,.gcell,'
+  const revealSel='.s3,.uccard,.quote,.fq,.gcell,.pcard,'
     +'#how .eyebrow,#how .sec-title,'
+    +'#pricing .eyebrow,#pricing .sec-title,#pricing .sec-sub,'
     +'#gallery .eyebrow,#gallery .sec-title,#gallery .sec-sub,'
     +'#uses .eyebrow,#uses .sec-title,'
     +'#reviews .eyebrow,#reviews .sec-title,'
@@ -1346,6 +1446,24 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
   },{threshold:.12, rootMargin:'0px 0px -40px 0px'});
   revealEls.forEach(el=>ro.observe(el));
 }
+
+/* ============================================================
+   Mobile sticky CTA bar
+   ============================================================ */
+(function(){
+  const bar=$('mobileCta'); if(!bar) return;
+  const createSec=document.getElementById('create');
+  const hero=document.querySelector('.hero');
+  let wizardVisible=false;
+  function sync(){
+    const pastHero = window.scrollY > hero.offsetHeight*0.5;
+    bar.classList.toggle('hide', !pastHero || wizardVisible);
+  }
+  const io2=new IntersectionObserver(es=>{ es.forEach(e=>{ wizardVisible=e.isIntersecting; sync(); }); },{threshold:.05});
+  io2.observe(createSec);
+  window.addEventListener('scroll', sync, {passive:true});
+  sync();
+})();
 
 /* ============================================================
    Divine Ambient Music Control
