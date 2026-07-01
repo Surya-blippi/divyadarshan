@@ -1,0 +1,28 @@
+DivyaDarshan — Deity / Idol Images
+==================================
+Files here are named after the temple/deity and referenced by index.html.
+
+12 JYOTIRLINGAS — provided by you (LIVE)
+----------------------------------------
+somnath.jpg          Somnath
+Mallikarjuna.jpg     Mallikarjuna (Srisailam)
+Mahakaleshwar.jpg    Mahakaleshwar (Ujjain)
+omkareshwar.jpg      Omkareshwar
+kedarnath.jpg        Kedarnath
+bhimashankar.jpg     Bhimashankar
+kashi.jpg            Kashi Vishwanath
+trimbakeshwar.jpg    Trimbakeshwar
+vaidyanath.jpg       Baidyanath (Deoghar)
+nageshwar.jpeg       Nageshwar
+Ramanathaswamy.jpg   Rameshwaram
+grishneshwar.jpg     Grishneshwar
+
+FAMOUS DEITY TEMPLES — STILL MISSING (add these 3)
+--------------------------------------------------
+jagannath.jpg   ->  Jagannath, Balabhadra & Subhadra (Puri)
+meenakshi.jpg   ->  Meenakshi Amman (Madurai)
+tirupati.jpg    ->  Lord Venkateswara / Balaji (Tirumala)
+
+Drop those three files into this folder with the EXACT names above and they
+appear automatically. Until then the site shows a saffron "ॐ" placeholder for
+each. Filenames are case-sensitive on web servers — match them exactly.
