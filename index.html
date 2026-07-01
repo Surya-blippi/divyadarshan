@@ -158,7 +158,7 @@
   .tchip{border:1.5px solid var(--line);background:#fff;color:var(--maroon);padding:9px 16px;border-radius:40px;font-weight:600;font-size:.84rem;transition:.2s}
   .tchip.active{background:linear-gradient(135deg,var(--saffron),var(--maroon));color:#fff;border-color:transparent}
 
-  .tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-height:420px;overflow-y:auto;padding:4px;margin:0 -4px}
+  .tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-height:420px;overflow-y:auto;padding:4px;margin:0 -4px;-webkit-overflow-scrolling:touch}
   @media(max-width:520px){.tgrid{grid-template-columns:repeat(2,1fr)}}
   .tcard{background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);cursor:pointer;border:3px solid transparent;transition:transform .16s,border-color .16s}
   .tcard:hover{transform:translateY(-4px)}
@@ -378,6 +378,159 @@
   @media(prefers-reduced-motion:reduce){
     *{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.001ms!important}
     .reveal{opacity:1!important;transform:none!important}
+  }
+
+  /* ==========================================
+     Mobile UX Enhancements
+     ========================================== */
+  @media(max-width:860px){
+    /* 1. Hide summary column on mobile to reduce scroll depth */
+    .wz-side {
+      display: none;
+    }
+    
+    /* 2. Add padding to wz-body so content doesn't get hidden behind the sticky bottom bar */
+    .wz-body {
+      padding-bottom: 90px;
+    }
+    @supports(padding-bottom: env(safe-area-inset-bottom)) {
+      .wz-body {
+        padding-bottom: calc(95px + env(safe-area-inset-bottom));
+      }
+    }
+
+    /* 3. Make wz-nav a sticky bottom bar on mobile viewports */
+    .wz-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 12px 20px;
+      background: rgba(255, 248, 239, 0.96); /* Matches cream background with opacity */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 -8px 24px rgba(90, 30, 0, 0.1);
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    /* Safe area padding for newer iOS devices */
+    @supports(padding-bottom: env(safe-area-inset-bottom)) {
+      .wz-nav {
+        padding-bottom: calc(12px + env(safe-area-inset-bottom));
+      }
+    }
+    .wz-nav .btn {
+      padding: 12px 20px;
+      font-size: 0.95rem;
+    }
+    .wz-hint {
+      font-size: 0.8rem;
+      text-align: center;
+      flex: 1;
+      padding: 0 4px;
+    }
+  }
+
+  @media(max-width:720px) {
+    /* 4. Improve Stepper display on mobile */
+    .wz-top {
+      padding: 16px 16px 0;
+    }
+    .wz-main {
+      padding: 20px 16px 24px;
+    }
+    .stp {
+      flex: 1 1 0 !important; /* Ensure steps stretch evenly */
+    }
+    .stp .lb {
+      display: none !important; /* Hide labels */
+    }
+    .stp .bar {
+      margin: 0 6px !important;
+      min-width: auto !important;
+    }
+  }
+
+  @media(max-width:600px) {
+    /* 5. Ribbon text wrap adjustments */
+    .ribbon {
+      font-size: 0.78rem;
+      padding: 8px 36px 8px 12px;
+    }
+    
+    /* 6. Prevent Hero Visual (.transform) overflow on mobile */
+    .transform {
+      padding: 12px 8px;
+      gap: 6px;
+      border-radius: 16px;
+    }
+    .t-tag {
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      bottom: 6px;
+    }
+    .t-op {
+      font-size: 1.3rem;
+    }
+    .t-cap {
+      font-size: 0.7rem;
+      margin-top: 6px;
+    }
+    .t-card.res .t-img {
+      box-shadow: 0 0 0 2px var(--marigold);
+    }
+    
+    /* 7. FAQ adjustments */
+    .fq button {
+      padding: 14px 16px;
+      font-size: 0.95rem;
+      gap: 8px;
+    }
+    .fq .a p {
+      padding: 0 16px 14px;
+      font-size: 0.88rem;
+    }
+  }
+
+  @media(max-width:500px) {
+    /* 8. Header Navigation adjustments for small screens */
+    .brand {
+      font-size: 1.2rem;
+      gap: 8px;
+    }
+    .brand .om {
+      width: 34px;
+      height: 34px;
+      font-size: 1.1rem;
+      border-radius: 10px;
+    }
+    .brand small {
+      font-size: 0.5rem;
+      letter-spacing: 0.15em;
+    }
+    .nav-cta {
+      display: none !important; /* Hide sticky CTA to make room for Brand and Lang Toggle */
+    }
+    .lang-btn {
+      padding: 6px 10px;
+      font-size: 0.8rem;
+    }
+    
+    /* 9. Pack CTA adjustments */
+    .pack-cta {
+      flex-direction: column;
+      align-items: stretch;
+      text-align: center;
+      gap: 10px;
+      padding: 12px;
+    }
+    .pack-cta button {
+      width: 100%;
+    }
   }
 </style>
 </head>
@@ -881,7 +1034,18 @@ function updateNav(){
   $('btnNext').disabled = !ok;
   $('btnNext').textContent = step===TOTAL ? L('🪔 Place My Order') : L('Continue →');
   const hints={1:L('Upload a photo to continue'),2:L('Select at least one idol to continue'),3:''};
-  $('wzHint').textContent = ok ? '' : (hints[step]||'');
+  if(!ok) {
+    $('wzHint').textContent = hints[step]||'';
+    $('wzHint').style.color = 'var(--saffron-d)';
+  } else {
+    const pb = priceBreakdown();
+    if(pb.count > 0 && (step === 2 || step === 3)) {
+      $('wzHint').innerHTML = `<b>₹${pb.total}</b> (${pb.count} ${pb.count===1 ? L('idol') : L('idols')})`;
+      $('wzHint').style.color = 'var(--maroon)';
+    } else {
+      $('wzHint').textContent = '';
+    }
+  }
 }
 function goTo(n){
   step=Math.max(1,Math.min(TOTAL,n));
