@@ -339,6 +339,41 @@
   .dropzone.pulse{animation:dzpulse 1.6s ease-out 2;border-color:var(--saffron)}
   @keyframes dzpulse{0%{box-shadow:0 0 0 0 rgba(255,122,26,.45)}70%{box-shadow:0 0 0 18px rgba(255,122,26,0)}100%{box-shadow:0 0 0 0 rgba(255,122,26,0)}}
   .pay-strip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:14px}
+
+  /* ---------- Sankalp blessing + devotional moments ---------- */
+  .sankalp-bless{margin-top:16px;text-align:center;padding:14px 16px;border-radius:14px;background:linear-gradient(135deg,#fff6ea,#ffeede);border:1px dashed var(--gold)}
+  .sankalp-bless .deities{font-weight:700;color:var(--maroon);font-size:.93rem}
+  .sankalp-bless .bless{margin-top:6px;color:var(--saffron-d);font-size:.88rem;font-weight:600}
+  .diya{display:inline-block;animation:flick .55s ease-in-out infinite alternate}
+  @keyframes flick{from{filter:brightness(1);transform:scale(1)}to{filter:brightness(1.4);transform:scale(1.15)}}
+  .bell-wrap{margin:24px auto 4px;text-align:center}
+  .bell{font-size:3.2rem;background:none;border:none;cursor:pointer;display:inline-block;transform-origin:top center;filter:drop-shadow(0 8px 18px rgba(255,138,0,.4));transition:transform .15s}
+  .bell:hover{transform:scale(1.06)}
+  .bell.swing{animation:swing 1.1s ease-in-out}
+  @keyframes swing{0%{transform:rotate(0)}15%{transform:rotate(20deg)}35%{transform:rotate(-15deg)}55%{transform:rotate(10deg)}75%{transform:rotate(-5deg)}100%{transform:rotate(0)}}
+  .bell-hint{font-size:.88rem;color:var(--saffron-d);font-weight:700;margin-top:4px}
+  .blessing{max-width:480px;margin:16px auto 0;color:var(--maroon);font-weight:600;font-size:1.02rem;line-height:1.6;opacity:0;transform:translateY(10px);transition:opacity .9s ease,transform .9s ease}
+  .blessing.show{opacity:1;transform:none}
+  .petal{position:fixed;top:-40px;z-index:90;pointer-events:none;animation:petalfall linear forwards}
+  @keyframes petalfall{to{transform:translateY(112vh) rotate(340deg)}}
+
+  /* ---------- Hero entrance bell ---------- */
+  .hero-bell{position:absolute;top:0;right:7%;z-index:6;text-align:center;cursor:pointer;user-select:none;-webkit-user-select:none}
+  .hero-bell .rope{width:3px;height:56px;margin:0 auto;background:linear-gradient(180deg,#a4713a,#7a4f22);border-radius:2px}
+  .hero-bell .hb{font-size:2.6rem;line-height:1;display:inline-block;transform-origin:top center;animation:sway 3.2s ease-in-out infinite;filter:drop-shadow(0 8px 16px rgba(255,138,0,.35))}
+  .hero-bell.rung .hb{animation:swing 1.1s ease-in-out}
+  @keyframes sway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+  .hero-bell .hb-hint{font-size:.68rem;font-weight:700;letter-spacing:.04em;color:var(--saffron-d);margin-top:2px;opacity:.85}
+  .hb-toast{position:absolute;top:calc(100% + 8px);right:0;min-width:210px;background:#fff;border:1px solid var(--gold);border-radius:12px;padding:10px 14px;font-size:.84rem;font-weight:600;color:var(--maroon);box-shadow:var(--shadow);opacity:0;transform:translateY(-6px);transition:all .4s ease;pointer-events:none}
+  .hb-toast.show{opacity:1;transform:none}
+  @media(max-width:600px){.hero-bell{right:14px}.hero-bell .rope{height:34px}.hero-bell .hb{font-size:2.1rem}}
+
+  /* ---------- Pranam on deity cards ---------- */
+  .gcell{cursor:pointer}
+  .gcell .pranam{position:absolute;top:8px;right:8px;z-index:2;font-size:1rem;background:rgba(255,255,255,.92);border-radius:50%;width:28px;height:28px;display:grid;place-items:center;box-shadow:var(--shadow-sm);transition:transform .15s}
+  .gcell:hover .pranam{transform:scale(1.15)}
+  .g-bless{position:absolute;left:6px;right:6px;bottom:34px;z-index:3;background:rgba(255,255,255,.95);border:1px solid var(--gold);border-radius:10px;padding:7px 9px;font-size:.72rem;font-weight:700;color:var(--maroon);text-align:center;line-height:1.4;opacity:0;transform:translateY(6px);transition:all .35s ease;pointer-events:none}
+  .g-bless.show{opacity:1;transform:none}
   .pay-lbl{font-size:.76rem;color:var(--muted);font-weight:600}
   .pay-chip{background:#fff;border:1px solid var(--line);border-radius:8px;padding:4px 10px;font-size:.74rem;font-weight:800;color:var(--maroon);letter-spacing:.02em}
 
@@ -657,6 +692,12 @@
 
 <!-- ===== Hero ===== -->
 <section class="hero">
+  <div class="hero-bell" id="heroBell" role="button" aria-label="Ring the temple bell" title="Ring the temple bell">
+    <div class="rope"></div>
+    <div class="hb">🔔</div>
+    <div class="hb-hint">Ring the bell</div>
+    <div class="hb-toast" id="hbToast"></div>
+  </div>
   <div class="wrap hero-grid">
     <div>
       <div class="hero-badges">
@@ -750,7 +791,7 @@
         <div class="stepper" id="stepper">
           <div class="stp active" data-s="1"><div class="num">1</div><div class="lb">Photo</div><div class="bar"></div></div>
           <div class="stp" data-s="2"><div class="num">2</div><div class="lb">Idols</div><div class="bar"></div></div>
-          <div class="stp" data-s="3"><div class="num">3</div><div class="lb">Details</div></div>
+          <div class="stp" data-s="3"><div class="num">3</div><div class="lb">Sankalp</div></div>
         </div>
       </div>
 
@@ -797,8 +838,8 @@
 
           <!-- STEP 3 · Details -->
           <div class="step-pane" data-pane="3">
-            <h3 class="pane-h">Where should we send your portrait?</h3>
-            <p class="pane-sub">We'll share your divine portrait on WhatsApp &amp; email within 24–48 hours.</p>
+            <h3 class="pane-h">Your Sankalp 🙏</h3>
+            <p class="pane-sub">Tell us who this darshan is for — your divine portrait arrives on WhatsApp &amp; email within 24–48 hours.</p>
             <div class="row2">
               <div class="field"><label>Full Name</label><input type="text" id="fName" placeholder="e.g. Aarav Sharma" /></div>
               <div class="field"><label>WhatsApp Number</label><input type="tel" id="fPhone" placeholder="+91 98765 43210" /></div>
@@ -822,6 +863,10 @@
               <div><b>100% risk-free.</b> Don't love your portrait? <b>Full refund</b> within 48 hours of delivery — no questions asked.</div>
             </div>
             <div class="pay-strip"><span class="pay-lbl">Pay securely via</span><span class="pay-chip">UPI</span><span class="pay-chip">GPay</span><span class="pay-chip">PhonePe</span><span class="pay-chip">Cards</span></div>
+            <div class="sankalp-bless" id="sankalpBless" style="display:none">
+              <div class="deities" id="sankalpDeities"></div>
+              <div class="bless" id="sankalpLine"></div>
+            </div>
           </div>
         </div>
 
@@ -859,6 +904,11 @@
         <h3>🙏 Your order is placed!</h3>
         <div class="oid" id="orderId">DVYA-000000</div>
         <p style="color:var(--muted);margin-top:14px;max-width:520px;margin-left:auto;margin-right:auto" id="successMsg"></p>
+        <div class="bell-wrap" id="bellWrap" style="display:none">
+          <button class="bell" id="ringBell" aria-label="Ring the temple bell">🔔</button>
+          <div class="bell-hint" id="bellHint">Ring the bell 🙏</div>
+          <div class="blessing" id="blessing"></div>
+        </div>
         <div class="timeline">
           <div class="tl"><div class="n">1</div><h4>Artist assigned</h4><p>Your photo &amp; order are safely received — a DivyaDarshan artist begins right away.</p></div>
           <div class="tl"><div class="n">2</div><h4>Crafting &amp; Blend</h4><p>Our artists carefully blend your photo with the sacred shrine.</p></div>
@@ -875,7 +925,7 @@
   <div class="wrap">
     <p class="eyebrow center">Sacred Gallery</p>
     <h2 class="sec-title center">The deities you'll stand before</h2>
-    <p class="sec-sub center">Every one of these deities is available for your portrait.</p>
+    <p class="sec-sub center">Every one of these deities is available for your portrait — tap any deity to offer pranam 🙏</p>
     <div class="gal" id="galGrid"></div>
     <div class="center" style="margin-top:34px"><a href="#create"><button class="btn btn-primary">Create My Portrait →</button></a></div>
   </div>
@@ -1000,6 +1050,76 @@ const SB_URL = 'https://nwglxofwdutesoskzyys.supabase.co';
 const SB_KEY = 'sb_publishable_WVvYk4iArOacK_C5CeY4BA_Pnp2RShk';
 const sb = (window.supabase && window.supabase.createClient) ? window.supabase.createClient(SB_URL, SB_KEY) : null;
 
+/* ============ Devotional moments: temple bell (synthesised — no audio files) + petals ============ */
+let _ac=null;
+function bellChime(vol=0.15, base=740){
+  try{
+    _ac = _ac || new (window.AudioContext||window.webkitAudioContext)();
+    if(_ac.state==='suspended') _ac.resume();
+    const t=_ac.currentTime;
+    [[base,1],[base*2.02,.45],[base*2.96,.22],[base*4.1,.1]].forEach(([f,g])=>{
+      const o=_ac.createOscillator(), gn=_ac.createGain();
+      o.type='sine'; o.frequency.value=f;
+      gn.gain.setValueAtTime(vol*g, t);
+      gn.gain.exponentialRampToValueAtTime(0.0001, t+1.8);
+      o.connect(gn); gn.connect(_ac.destination);
+      o.start(t); o.stop(t+1.9);
+    });
+  }catch(_){}
+}
+function showerPetals(){
+  const petals=['🌼','🏵️','🌺','🌸'];
+  for(let i=0;i<22;i++){
+    const p=document.createElement('span');
+    p.className='petal';
+    p.textContent=petals[Math.floor(Math.random()*petals.length)];
+    p.style.left=(Math.random()*100)+'vw';
+    p.style.fontSize=(14+Math.random()*20)+'px';
+    p.style.animationDuration=(2.6+Math.random()*2.4)+'s';
+    p.style.animationDelay=(Math.random()*0.9)+'s';
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 6500);
+  }
+}
+/* small petal burst from a point (hero bell taps, deity pranam) */
+function burstPetals(x, y, count=9){
+  const petals=['🌼','🏵️','🌺','🌸'];
+  for(let i=0;i<count;i++){
+    const p=document.createElement('span');
+    p.textContent=petals[Math.floor(Math.random()*petals.length)];
+    p.style.cssText=`position:fixed;left:${x}px;top:${y}px;z-index:95;pointer-events:none;font-size:${13+Math.random()*12}px`;
+    document.body.appendChild(p);
+    const dx=(Math.random()-0.5)*160, dy=60+Math.random()*120, rot=(Math.random()-0.5)*260;
+    p.animate(
+      [{transform:'translate(0,0) rotate(0deg)',opacity:1},
+       {transform:`translate(${dx*0.6}px,${-30-Math.random()*40}px) rotate(${rot*0.4}deg)`,opacity:1,offset:0.35},
+       {transform:`translate(${dx}px,${dy}px) rotate(${rot}deg)`,opacity:0}],
+      {duration:1300+Math.random()*700, easing:'cubic-bezier(.2,.6,.4,1)'}
+    );
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ---- Hero entrance bell: ring on arrival, like at a temple gate ---- */
+(function(){
+  const hb=document.getElementById('heroBell'); if(!hb) return;
+  const EN_BLESS=['Shubh Darshan! May your day be blessed 🙏','May Bhagwan bless your family 🙏','Om Namah Shivaya 🕉️'];
+  const HI_BLESS=['शुभ दर्शन! आपका दिन मंगलमय हो 🙏','भगवान आपके परिवार पर कृपा रखें 🙏','ॐ नमः शिवाय 🕉️'];
+  let n=0;
+  hb.addEventListener('click', ()=>{
+    hb.classList.remove('rung'); void hb.offsetWidth; hb.classList.add('rung');
+    bellChime(0.2, 700);
+    setTimeout(()=>bellChime(0.1, 700), 300);
+    const r=hb.querySelector('.hb').getBoundingClientRect();
+    burstPetals(r.left+r.width/2, r.top+r.height/2, 10);
+    const toast=document.getElementById('hbToast');
+    const list=(typeof LANG!=='undefined'&&LANG==='hi')?HI_BLESS:EN_BLESS;
+    toast.textContent=list[n++ % list.length];
+    toast.classList.remove('show'); void toast.offsetWidth; toast.classList.add('show');
+    clearTimeout(toast._t); toast._t=setTimeout(()=>toast.classList.remove('show'), 2600);
+  });
+})();
+
 /* ============ Temple data (real photos, verified) ============ */
 const temples = [
   {name:"Somnath",loc:"Gujarat",cat:"jyotirlinga",deity:"Shiva Lingam",img:"assets/idols/somnath.jpg"},
@@ -1040,7 +1160,7 @@ function priceBreakdown(){
 }
 function toggleIdol(t){
   const i = state.temples.findIndex(x=>x.name===t.name);
-  if(i>=0) state.temples.splice(i,1); else state.temples.push(t);
+  if(i>=0) state.temples.splice(i,1); else { state.temples.push(t); bellChime(0.07); }
   renderTemples(currentCat); updateSummary(); updateNav();
 }
 
@@ -1074,7 +1194,18 @@ function renderGallery(){
   const g=$('galGrid'); g.innerHTML='';
   temples.slice(0,12).forEach(t=>{
     const c=document.createElement('div');c.className='gcell';
-    c.innerHTML=`<img loading="lazy" src="${t.img}" alt="${t.deity} at ${t.name}" onerror="this.closest('.gcell').style.display='none'"><span>${L(t.name)}</span>`;
+    c.innerHTML=`<img loading="lazy" src="${t.img}" alt="${t.deity} at ${t.name}" onerror="this.closest('.gcell').style.display='none'">
+      <span class="pranam">🙏</span><div class="g-bless"></div><span>${L(t.name)}</span>`;
+    c.addEventListener('click', (e)=>{
+      bellChime(0.1, 780);
+      burstPetals(e.clientX, e.clientY, 7);
+      const b=c.querySelector('.g-bless');
+      b.textContent = LANG==='hi'
+        ? L(t.name)+' का आशीर्वाद आपके परिवार पर बना रहे 🙏'
+        : "May "+t.name+"'s blessings be upon your family 🙏";
+      b.classList.remove('show'); void b.offsetWidth; b.classList.add('show');
+      clearTimeout(b._t); b._t=setTimeout(()=>b.classList.remove('show'), 2600);
+    });
     g.appendChild(c);
   });
 }
@@ -1139,7 +1270,7 @@ $('packBtn').addEventListener('click',()=>{
   const allJ=temples.filter(t=>t.cat==='jyotirlinga');
   const hasAll=allJ.every(t=>chosen.has(t.name));
   if(hasAll){ state.temples=state.temples.filter(t=>t.cat!=='jyotirlinga'); }
-  else { allJ.forEach(t=>{ if(!chosen.has(t.name)) state.temples.push(t); }); }
+  else { allJ.forEach(t=>{ if(!chosen.has(t.name)) state.temples.push(t); }); bellChime(0.1); }
   renderTemples(currentCat); updateSummary(); updateNav();
 });
 
@@ -1162,6 +1293,7 @@ function updateSummary(){
     ? `<b>₹${pb.total}</b> · ${pb.count} ${pb.count===1?L('idol'):L('idols')}`
     : (LANG==='hi' ? 'पहली मूर्ति <b>₹59</b> · सुरक्षित UPI' : '<b>₹59</b> first idol · UPI secure');
   updateSelInfo(pb);
+  if(typeof updateSankalpBless==='function') updateSankalpBless();
 }
 function updateSelInfo(pb){
   pb = pb || priceBreakdown();
@@ -1192,7 +1324,23 @@ function updateStepper(){
     s.querySelector('.num').textContent = n<step ? '✓' : n;
   });
 }
+function updateSankalpBless(){
+  const box=$('sankalpBless'); if(!box) return;
+  const pb=priceBreakdown();
+  if(step!==TOTAL || pb.count===0){ box.style.display='none'; return; }
+  const names=state.temples.map(t=>LANG==='hi'?L(t.name):t.name);
+  const list = names.length<=2 ? names.join(LANG==='hi'?' और ':' & ')
+             : names.slice(0,2).join(', ') + (LANG==='hi' ? ' और '+(names.length-2)+' अन्य' : ' & '+(names.length-2)+' more');
+  $('sankalpDeities').textContent = LANG==='hi'
+    ? '🛕 '+list+' के दर्शन से बस एक कदम दूर'
+    : '🛕 One step from darshan of '+list;
+  $('sankalpLine').textContent = LANG==='hi'
+    ? 'भगवान आपके परिवार को सुख-शांति दें 🙏'
+    : 'May Bhagwan bless your family with peace & happiness 🙏';
+  box.style.display='block';
+}
 function showPane(){
+  updateSankalpBless();
   document.querySelectorAll('.step-pane').forEach(p=>p.classList.toggle('on',+p.dataset.pane===step));
 }
 function stepValid(s){
@@ -1206,7 +1354,7 @@ function updateNav(){
   $('btnNext').disabled = !ok;
   const pbn=priceBreakdown();
   let nxt;
-  if(step===TOTAL){ nxt = (LANG==='hi' ? '🔒 ₹'+pbn.total+' सुरक्षित भुगतान करें' : '🔒 Pay ₹'+pbn.total+' Securely'); }
+  if(step===TOTAL){ nxt = (LANG==='hi' ? '🙏 मेरा दर्शन पूर्ण करें — ₹'+pbn.total : '🙏 Complete My Darshan — ₹'+pbn.total); }
   else { nxt = L('Continue →'); if(step===2 && ok && pbn.total>0) nxt = nxt.replace(' →',' · ₹'+pbn.total+' →'); }
   $('btnNext').textContent = nxt;
   const hints={1:L('Upload a photo to continue'),2:L('Select at least one idol to continue'),3:''};
@@ -1261,7 +1409,7 @@ async function submitOrder(){
   const failMsg = LANG==='hi'
     ? 'आपकी फ़ोटो सेव नहीं हो पाई — कोई पैसा नहीं कटा। कृपया दोबारा कोशिश करें। 🙏'
     : "We couldn't save your photo — you have not been charged. Please try again. 🙏";
-  btn.disabled=true; btn.textContent = LANG==='hi' ? 'फ़ोटो सेव हो रही है… 🙏' : 'Saving your photo… 🙏';
+  btn.disabled=true; btn.innerHTML = '<span class="diya">🪔</span> ' + (LANG==='hi' ? 'फ़ोटो सेव हो रही है…' : 'Saving your photo…');
 
   if(!sb){ alert(failMsg); resetBtn(); return; }
   try{
@@ -1288,7 +1436,7 @@ async function submitOrder(){
     if(ins.error){ console.warn('order insert failed', ins.error); alert(failMsg); resetBtn(); return; }
   }catch(e){ console.warn('backend record failed', e); alert(failMsg); resetBtn(); return; }
   // Create the Dodo checkout session (exact ₹ amount) via our backend, then redirect
-  btn.textContent = LANG==='hi' ? 'भुगतान पेज खुल रहा है… 🙏' : 'Opening payment… 🙏';
+  btn.innerHTML = '<span class="diya">🪔</span> ' + (LANG==='hi' ? 'भुगतान पेज खुल रहा है…' : 'Opening payment…');
   let checkoutUrl=null;
   try{
     const ret = location.origin + location.pathname + '?dd_return=1';
@@ -1331,12 +1479,46 @@ function renderReceipt(order, state){          // state: 'processing' | 'paid' |
       : `Thank you, <b>${order.name}</b>! Order <b>${order.oid}</b> (₹${order.total}) is recorded. Confirming your payment… ⏳`;
   }
   $('successMsg').innerHTML = msg;
+  // temple bell ritual — only on a successful darshan
+  const bw=$('bellWrap');
+  if(bw){
+    if(state==='paid'){
+      window.__ddPaidOrder = order;
+      $('bellHint').textContent = hi ? 'घंटी बजाएँ 🙏' : 'Ring the bell 🙏';
+      $('blessing').classList.remove('show');
+      $('blessing').textContent='';
+      bw.style.display='block';
+    } else {
+      bw.style.display='none';
+    }
+  }
   $('wzBody').style.display='none';
   $('wzNav').style.display='none';
   document.querySelector('.wz-top').style.display='none';
   $('success').classList.add('on');
   $('success').scrollIntoView({behavior:'smooth',block:'center'});
 }
+
+/* ---- Ring the bell: swing + chime + petal shower + personalised blessing ---- */
+(function(){
+  const bell=$('ringBell'); if(!bell) return;
+  bell.addEventListener('click', ()=>{
+    bell.classList.remove('swing'); void bell.offsetWidth; bell.classList.add('swing');
+    bellChime(0.22, 660);
+    setTimeout(()=>bellChime(0.12, 660), 320);
+    showerPetals();
+    const order=window.__ddPaidOrder; if(!order) return;
+    const hi=(order.lang||LANG)==='hi';
+    const names=(order.idols||'').split(',').map(s=>s.trim()).filter(Boolean);
+    const dev = names.length
+      ? (hi ? names.map(n=>HI[n]||n).join(', ') : names.join(', '))
+      : (hi ? 'भगवान' : 'Bhagwan');
+    $('blessing').innerHTML = hi
+      ? `${order.name} जी, आपका संकल्प पूर्ण हुआ 🙏<br>${dev} आपके परिवार की रक्षा करें और सुख-शांति प्रदान करें।`
+      : `${order.name} ji, your sankalp is complete 🙏<br>May ${dev} protect your family and bless them with peace &amp; happiness.`;
+    setTimeout(()=>$('blessing').classList.add('show'), 250);
+  });
+})();
 
 async function confirmPayment(order, failedHint){
   renderReceipt(order, failedHint ? 'failed' : 'processing');
@@ -1436,7 +1618,7 @@ const T = [
   {sel:'#create > .wrap > .eyebrow', hi:'कुछ ही मिनटों में बनाएँ'},
   {sel:'#create > .wrap > .sec-title', hi:'3 आसान चरणों में आपकी दिव्य तस्वीर'},
   {sel:'#create > .wrap > .sec-sub', hi:'न डिज़ाइन का ज्ञान चाहिए, बस साथ चलें — आगे हम संभाल लेंगे।'},
-  {sel:'.stp .lb', list:['फ़ोटो','मूर्तियाँ','जानकारी']},
+  {sel:'.stp .lb', list:['फ़ोटो','मूर्तियाँ','संकल्प']},
   // step 1
   {sel:'[data-pane="1"] .pane-h', hi:'वह फ़ोटो अपलोड करें जिसे आशीर्वाद देना है'},
   {sel:'[data-pane="1"] .pane-sub', hi:'साफ़, सामने से ली गई फ़ोटो सबसे अच्छी रहती है। आप, आपका परिवार, दोस्त या कोई अपना जिसे सम्मान देना चाहते हैं।'},
@@ -1450,8 +1632,8 @@ const T = [
   {sel:'.pack-cta span', hi:'12 दिव्य तस्वीरें · ₹100 की बचत'},
   {sel:'#tChips .tchip', list:['सभी','12 ज्योतिर्लिंग','प्रसिद्ध मंदिर']},
   // step 3 · details
-  {sel:'[data-pane="3"] .pane-h', hi:'आपकी दिव्य तस्वीर कहाँ भेजें?'},
-  {sel:'[data-pane="3"] .pane-sub', hi:'हम आपकी दिव्य तस्वीर 24–48 घंटे में WhatsApp और ईमेल पर भेजेंगे।'},
+  {sel:'[data-pane="3"] .pane-h', hi:'आपका संकल्प 🙏'},
+  {sel:'[data-pane="3"] .pane-sub', hi:'बताएँ यह दर्शन किसके लिए है — आपकी दिव्य तस्वीर 24–48 घंटे में WhatsApp और ईमेल पर।'},
   {sel:'[data-pane="3"] .field label', list:['पूरा नाम','WhatsApp नंबर','ईमेल <span style="color:var(--muted);font-weight:400">(वैकल्पिक)</span>','अवसर <span style="color:var(--muted);font-weight:400">(वैकल्पिक)</span>','ख़ास निर्देश <span style="color:var(--muted);font-weight:400">(वैकल्पिक)</span>']},
   {sel:'.guarantee div', hi:'<b>100% जोखिम-मुक्त।</b> तस्वीर पसंद न आए? डिलीवरी के 48 घंटे के भीतर <b>पूरा पैसा वापस</b> — बिना कोई सवाल।'},
   {sel:'.pay-lbl', hi:'सुरक्षित भुगतान:'},
@@ -1480,7 +1662,8 @@ const T = [
   // gallery
   {sel:'#gallery .eyebrow', hi:'पावन गैलरी'},
   {sel:'#gallery .sec-title', hi:'जिन देवताओं के सामने आप खड़े होंगे'},
-  {sel:'#gallery .sec-sub', hi:'ये सभी देवता आपकी तस्वीर के लिए उपलब्ध हैं।'},
+  {sel:'#gallery .sec-sub', hi:'ये सभी देवता आपकी तस्वीर के लिए उपलब्ध हैं — प्रणाम करने के लिए किसी भी देवता पर टैप करें 🙏'},
+  {sel:'.hero-bell .hb-hint', hi:'घंटी बजाएँ'},
   {sel:'#gallery .btn-primary', hi:'मेरी तस्वीर बनवाएँ →'},
   // pricing
   {sel:'#pricing .eyebrow', hi:'सीधा-सादा दाम'},
