@@ -370,7 +370,7 @@
 
   /* ---------- Pranam on deity cards ---------- */
   .gcell{cursor:pointer}
-  .gcell .pranam{position:absolute;top:8px;right:8px;z-index:2;font-size:1rem;background:rgba(255,255,255,.92);border-radius:50%;width:28px;height:28px;display:grid;place-items:center;box-shadow:var(--shadow-sm);transition:transform .15s}
+  .gcell .pranam{position:absolute;top:8px;right:8px;left:auto;bottom:auto;padding:0;line-height:1;z-index:2;font-size:.95rem;background:rgba(255,255,255,.94);border-radius:50%;width:30px;height:30px;display:grid;place-items:center;box-shadow:var(--shadow-sm);transition:transform .15s}
   .gcell:hover .pranam{transform:scale(1.15)}
   .g-bless{position:absolute;left:6px;right:6px;bottom:34px;z-index:3;background:rgba(255,255,255,.95);border:1px solid var(--gold);border-radius:10px;padding:7px 9px;font-size:.72rem;font-weight:700;color:var(--maroon);text-align:center;line-height:1.4;opacity:0;transform:translateY(6px);transition:all .35s ease;pointer-events:none}
   .g-bless.show{opacity:1;transform:none}
@@ -998,7 +998,6 @@
     <div class="faq" id="faqList">
       <div class="fq"><button>How much does it cost? <span class="pl">+</span></button><div class="a"><p>First portrait <b>₹59</b>, every extra idol <b>₹40</b> (2 = ₹99, 3 = ₹139). All <b>12 Jyotirlingas: ₹399</b>. Pay securely by UPI or card — <b>full refund</b> if you don't love it.</p></div></div>
       <div class="fq"><button>How and when do I get it? <span class="pl">+</span></button><div class="a"><p>On <b>WhatsApp &amp; email within 24–48 hours</b> — high-resolution and download-ready.</p></div></div>
-      <div class="fq"><button>Is this a real edit or just a filter? <span class="pl">+</span></button><div class="a"><p><b>Hand-crafted by a real artist</b> — matching light, shadow and mood. Group photos welcome too.</p></div></div>
       <div class="fq"><button>Is my photo safe and private? <span class="pl">+</span></button><div class="a"><p>Used only for your portrait, <b>never shared or sold</b>, deleted after delivery.</p></div></div>
       <div class="fq"><button>Which idols can I choose? <span class="pl">+</span></button><div class="a"><p>All <b>12 Jyotirlingas</b> plus Jagannath (Puri), Venkateswara (Tirupati) and Meenakshi Amman. Something else? Ask on WhatsApp.</p></div></div>
     </div>
@@ -1690,13 +1689,11 @@ const T = [
   {sel:'.fq button', list:[
     'इसका दाम कितना है? <span class="pl">+</span>',
     'तस्वीर कैसे और कब मिलेगी? <span class="pl">+</span>',
-    'क्या यह असली एडिट है या सिर्फ़ फ़िल्टर? <span class="pl">+</span>',
     'क्या मेरी फ़ोटो सुरक्षित और निजी है? <span class="pl">+</span>',
     'मैं कौन-कौन सी मूर्तियाँ चुन सकता हूँ? <span class="pl">+</span>' ]},
   {sel:'.fq .a p', list:[
     'पहली तस्वीर <b>₹59</b>, हर अगली मूर्ति <b>₹40</b> (2 = ₹99, 3 = ₹139)। सभी <b>12 ज्योतिर्लिंग: ₹399</b>। UPI या कार्ड से सुरक्षित भुगतान — पसंद न आए तो <b>पूरा पैसा वापस</b>।',
     '<b>WhatsApp और ईमेल पर 24–48 घंटे में</b> — हाई-रिज़ॉल्यूशन, डाउनलोड के लिए तैयार।',
-    '<b>असली कलाकार हाथ से बनाते हैं</b> — मिलते-जुलते उजाले, परछाई और भाव के साथ। ग्रुप फ़ोटो भी चलेगी।',
     'सिर्फ़ आपकी तस्वीर बनाने के लिए, <b>कभी साझा या बेची नहीं जाती</b>, डिलीवरी के बाद हटा दी जाती है।',
     'सभी <b>12 ज्योतिर्लिंग</b> और जगन्नाथ (पुरी), वेंकटेश्वर (तिरुपति), मीनाक्षी अम्मन। कुछ और चाहिए? WhatsApp पर पूछें।' ]},
   // final CTA
