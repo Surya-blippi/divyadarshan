@@ -1082,10 +1082,10 @@ renderGallery();
 
 /* ---- Real results (photo + deity = portrait, like the hero) ---- */
 const EXAMPLES=[
-  {before:'assets/idols/person.jpg',   idol:'assets/idols/grishneshwar.jpg', after:'assets/idols/output.jpg',   deity:'Grishneshwar'},
-  {before:'assets/idols/person 2.jpg', idol:'assets/idols/grishneshwar.jpg', after:'assets/idols/output 2.jpg', deity:'Grishneshwar'},
-  {before:'assets/idols/person 3.jpg', idol:'assets/idols/grishneshwar.jpg', after:'assets/idols/output 3.jpg', deity:'Grishneshwar'},
-  {before:'assets/idols/person 4.jpg', idol:'assets/idols/grishneshwar.jpg', after:'assets/idols/output 4.jpg', deity:'Grishneshwar'}
+  {before:'assets/idols/person.jpg',   idol:'assets/idols/grishneshwar.jpg',  after:'assets/idols/output.jpg',   deity:'Grishneshwar'},
+  {before:'assets/idols/person 2.jpg', idol:'assets/idols/Mahakaleshwar.jpg', after:'assets/idols/output 2.jpg', deity:'Mahakaleshwar'},
+  {before:'assets/idols/person 3.jpg', idol:'assets/idols/somnath.jpg',       after:'assets/idols/output 3.jpg', deity:'Somnath'},
+  {before:'assets/idols/person 4.jpg', idol:'assets/idols/kedarnath.jpg',     after:'assets/idols/output 4.jpg', deity:'Kedarnath'}
 ];
 function renderExamples(){
   const g=$('exGrid'); if(!g) return; g.innerHTML='';
@@ -1238,7 +1238,7 @@ updateStepper();updateNav();
 
 /* ---- Submit ---- */
 /* ============ Payments — Dodo checkout session created by our backend (keys stay server-side) ============ */
-const DODO_TEST_MODE = true;                       // flip to false for live
+const DODO_TEST_MODE = false;                       // flip to false for live
 const CREATE_CHECKOUT_FN = SB_URL + '/functions/v1/create-checkout';
 const ORDER_STATUS_FN    = SB_URL + '/functions/v1/order-status';
 
