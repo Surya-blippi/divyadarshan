@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DivyaDarshan — Orders</title>
+<style>
+  :root{--saffron:#ff7a1a;--maroon:#7a1d1d;--deep:#2b0a0a;--cream:#fff8ef;--line:#e7d9c2;--ok:#1f8a4c;--muted:#8a6a48;--ink:#2f2012}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--cream);color:var(--ink);padding:20px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;max-width:1200px;margin:0 auto 20px}
+  h1{font-size:1.5rem;color:var(--maroon)}
+  h1 small{font-weight:400;color:var(--muted);font-size:.9rem}
+  .bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  select,button,input{font:inherit;padding:9px 14px;border:1.5px solid var(--line);border-radius:10px;background:#fff}
+  button{cursor:pointer;background:var(--maroon);color:#fff;border:none;font-weight:600}
+  button.ghost{background:#fff;color:var(--maroon);border:1.5px solid var(--line)}
+  .gate{max-width:380px;margin:12vh auto;background:#fff;border:1px solid var(--line);border-radius:16px;padding:30px;text-align:center;box-shadow:0 16px 40px rgba(90,30,0,.12)}
+  .gate h2{color:var(--maroon);margin-bottom:8px}
+  .gate p{color:var(--muted);font-size:.9rem;margin-bottom:18px}
+  .gate input{width:100%;margin-bottom:12px;text-align:center}
+  .gate button{width:100%}
+  .err{color:#c0392b;font-size:.85rem;margin-top:10px;min-height:1em}
+  .grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 6px 20px rgba(90,30,0,.07);display:flex;flex-direction:column}
+  .card .ph{position:relative;aspect-ratio:4/3;background:#f0e6d6}
+  .card .ph img{width:100%;height:100%;object-fit:cover;cursor:zoom-in}
+  .card .ph .none{position:absolute;inset:0;display:grid;place-items:center;color:#c0392b;font-weight:600;font-size:.85rem;text-align:center;padding:10px}
+  .badge{position:absolute;top:10px;right:10px;font-size:.68rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:4px 10px;border-radius:20px;color:#fff}
+  .badge.paid{background:var(--ok)}
+  .badge.pending_payment{background:#c98a1f}
+  .badge.failed{background:#c0392b}
+  .body{padding:14px 16px;flex:1}
+  .body .oid{font-weight:800;color:var(--maroon);font-size:.95rem}
+  .body .amt{float:right;font-weight:800;color:var(--deep)}
+  .body .who{margin-top:6px;font-weight:600}
+  .body .row{font-size:.86rem;color:var(--muted);margin-top:3px;word-break:break-word}
+  .body .idols{margin-top:8px;font-size:.85rem;color:var(--ink)}
+  .body .notes{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic}
+  .foot{display:flex;gap:8px;padding:12px 16px;border-top:1px solid var(--line)}
+  .foot a{flex:1;text-align:center;text-decoration:none;font-size:.85rem;font-weight:600;padding:8px;border-radius:9px;border:1.5px solid var(--line);color:var(--maroon)}
+  .foot a.dl{background:var(--maroon);color:#fff;border-color:var(--maroon)}
+  .empty{text-align:center;color:var(--muted);padding:40px}
+  .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;place-items:center;z-index:50;padding:20px}
+  .lightbox.on{display:grid}
+  .lightbox img{max-width:96vw;max-height:92vh;border-radius:8px}
+</style>
+</head>
+<body>
+
+<div id="gate" class="gate">
+  <h2>🔒 DivyaDarshan Orders</h2>
+  <p>Enter the admin key to view orders &amp; photos.</p>
+  <input id="key" type="password" placeholder="Admin key" autocomplete="off" />
+  <button id="enter">View Orders</button>
+  <div class="err" id="gateErr"></div>
+</div>
+
+<div id="app" style="display:none">
+  <header>
+    <h1>DivyaDarshan Orders <small id="count"></small></h1>
+    <div class="bar">
+      <select id="filter">
+        <option value="">All</option>
+        <option value="paid">Paid</option>
+        <option value="pending_payment">Pending payment</option>
+        <option value="failed">Failed</option>
+      </select>
+      <button class="ghost" id="refresh">↻ Refresh</button>
+      <button class="ghost" id="logout">Logout</button>
+    </div>
+  </header>
+  <div class="grid" id="grid"></div>
+</div>
+
+<div class="lightbox" id="lightbox"><img id="lbImg" alt="" /></div>
+
+<script>
+const FN = 'https://nwglxofwdutesoskzyys.supabase.co/functions/v1/admin-orders';
+const $ = id => document.getElementById(id);
+let KEY = sessionStorage.getItem('dd_admin_key') || '';
+
+function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+async function load(){
+  const status = $('filter').value;
+  $('grid').innerHTML = '<div class="empty">Loading…</div>';
+  try{
+    const r = await fetch(FN + '?key=' + encodeURIComponent(KEY) + (status?('&status='+status):''));
+    if(r.status===401){ logout('Wrong admin key.'); return; }
+    const d = await r.json();
+    $('count').textContent = '· ' + d.count + ' order' + (d.count===1?'':'s');
+    if(!d.orders.length){ $('grid').innerHTML = '<div class="empty">No orders yet.</div>'; return; }
+    $('grid').innerHTML = d.orders.map(o=>{
+      const dt = new Date(o.created_at).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'});
+      const ph = o.photo_url
+        ? `<img src="${o.photo_url}" alt="photo" onclick="zoom('${o.photo_url}')">`
+        : `<div class="none">⚠ No photo stored</div>`;
+      const st = esc(o.payment_status);
+      const wa = o.phone ? o.phone.replace(/[^0-9]/g,'') : '';
+      return `<div class="card">
+        <div class="ph">${ph}<span class="badge ${st}">${st.replace('_',' ')}</span></div>
+        <div class="body">
+          <span class="amt">₹${o.total_inr}</span>
+          <span class="oid">${esc(o.order_id)}</span>
+          <div class="who">${esc(o.name)}</div>
+          <div class="row">📱 ${esc(o.phone)}</div>
+          ${o.email?`<div class="row">✉ ${esc(o.email)}</div>`:''}
+          <div class="idols">🕉️ ${esc(o.idols)}</div>
+          ${o.occasion?`<div class="row">🎁 ${esc(o.occasion)}</div>`:''}
+          ${o.notes?`<div class="notes">"${esc(o.notes)}"</div>`:''}
+          <div class="row" style="margin-top:8px">🕐 ${dt}</div>
+        </div>
+        <div class="foot">
+          ${o.photo_url?`<a class="dl" href="${o.photo_url}" download="${esc(o.order_id)}.jpg">⬇ Photo</a>`:''}
+          ${wa?`<a href="https://wa.me/${wa}" target="_blank">💬 WhatsApp</a>`:''}
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){ $('grid').innerHTML = '<div class="empty">Error loading orders.</div>'; }
+}
+
+function zoom(u){ $('lbImg').src=u; $('lightbox').classList.add('on'); }
+$('lightbox').onclick=()=>$('lightbox').classList.remove('on');
+
+function showApp(){ $('gate').style.display='none'; $('app').style.display='block'; load(); }
+function logout(msg){ sessionStorage.removeItem('dd_admin_key'); KEY=''; $('app').style.display='none'; $('gate').style.display='block'; $('gateErr').textContent=msg||''; }
+
+$('enter').onclick=async()=>{
+  KEY = $('key').value.trim();
+  if(!KEY){ $('gateErr').textContent='Enter the key.'; return; }
+  $('gateErr').textContent='Checking…';
+  const r = await fetch(FN + '?key=' + encodeURIComponent(KEY));
+  if(r.status===401){ $('gateErr').textContent='Wrong admin key.'; return; }
+  sessionStorage.setItem('dd_admin_key', KEY); showApp();
+};
+$('key').addEventListener('keydown',e=>{ if(e.key==='Enter') $('enter').click(); });
+$('refresh').onclick=load;
+$('filter').onchange=load;
+$('logout').onclick=()=>logout();
+
+if(KEY) showApp();
+</script>
+</body>
+</html>
