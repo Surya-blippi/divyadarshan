@@ -3,6 +3,23 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1421708669671889');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1421708669671889&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 <title>DivyaDarshan — Divine Temple Portraits, Delivered in 24–48 Hours</title>
 <meta name="description" content="Upload a photo, choose a sacred temple — the 12 Jyotirlingas, Jagannath Puri and more — and receive a soulful divine portrait of your loved ones at the shrine. Hand-crafted by artists." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -1436,6 +1453,8 @@ async function submitOrder(){
     });
     if(ins.error){ console.warn('order insert failed', ins.error); alert(failMsg); resetBtn(); return; }
   }catch(e){ console.warn('backend record failed', e); alert(failMsg); resetBtn(); return; }
+  // Meta Pixel: real purchase intent
+  try{ if(window.fbq) fbq('track','InitiateCheckout',{value:pb.total, currency:'INR', num_items:pb.count, content_ids:state.temples.map(t=>t.name)}); }catch(_){}
   // Create the Dodo checkout session (exact ₹ amount) via our backend, then redirect
   btn.innerHTML = '<span class="diya">🪔</span> ' + (LANG==='hi' ? 'भुगतान पेज खुल रहा है…' : 'Opening payment…');
   let checkoutUrl=null;
@@ -1528,7 +1547,18 @@ async function confirmPayment(order, failedHint){
     try{
       const r = await fetch(ORDER_STATUS_FN + '?order_id=' + encodeURIComponent(order.oid));
       const j = await r.json();
-      if(j.status==='paid'){ renderReceipt(order,'paid'); try{localStorage.removeItem('dd_order');}catch(_){}; return; }
+      if(j.status==='paid'){
+        renderReceipt(order,'paid');
+        // Meta Pixel: confirmed purchase (fire once per order)
+        try{
+          const done = JSON.parse(localStorage.getItem('dd_fbq_purchased')||'[]');
+          if(window.fbq && done.indexOf(order.oid)<0){
+            fbq('track','Purchase',{value:order.total, currency:'INR', content_type:'product', content_name:order.idols});
+            done.push(order.oid); localStorage.setItem('dd_fbq_purchased', JSON.stringify(done.slice(-50)));
+          }
+        }catch(_){}
+        try{localStorage.removeItem('dd_order');}catch(_){}; return;
+      }
       if(j.status==='failed'){ renderReceipt(order,'failed'); return; }
     }catch(_){}
     await new Promise(r=>setTimeout(r,2000));
