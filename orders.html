@@ -76,7 +76,9 @@
 <div class="lightbox" id="lightbox"><img id="lbImg" alt="" /></div>
 
 <script>
-const FN = 'https://nwglxofwdutesoskzyys.supabase.co/functions/v1/admin-orders';
+const FN = 'https://nwglxofwdutesoskzyys.supabase.co/functions/v1/dd-admin-orders';
+const SB_KEY = 'sb_publishable_WVvYk4iArOacK_C5CeY4BA_Pnp2RShk';
+const AUTH = { 'Authorization':'Bearer '+SB_KEY, 'apikey':SB_KEY };
 const $ = id => document.getElementById(id);
 let KEY = sessionStorage.getItem('dd_admin_key') || '';
 
@@ -86,7 +88,7 @@ async function load(){
   const status = $('filter').value;
   $('grid').innerHTML = '<div class="empty">Loading…</div>';
   try{
-    const r = await fetch(FN + '?key=' + encodeURIComponent(KEY) + (status?('&status='+status):''));
+    const r = await fetch(FN + '?key=' + encodeURIComponent(KEY) + (status?('&status='+status):''), { headers:AUTH });
     if(r.status===401){ logout('Wrong admin key.'); return; }
     const d = await r.json();
     $('count').textContent = '· ' + d.count + ' order' + (d.count===1?'':'s');
@@ -130,7 +132,7 @@ $('enter').onclick=async()=>{
   KEY = $('key').value.trim();
   if(!KEY){ $('gateErr').textContent='Enter the key.'; return; }
   $('gateErr').textContent='Checking…';
-  const r = await fetch(FN + '?key=' + encodeURIComponent(KEY));
+  const r = await fetch(FN + '?key=' + encodeURIComponent(KEY), { headers:AUTH });
   if(r.status===401){ $('gateErr').textContent='Wrong admin key.'; return; }
   sessionStorage.setItem('dd_admin_key', KEY); showApp();
 };

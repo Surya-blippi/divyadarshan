@@ -1405,8 +1405,9 @@ updateStepper();updateNav();
 /* ---- Submit ---- */
 /* ============ Payments — Dodo checkout session created by our backend (keys stay server-side) ============ */
 const DODO_TEST_MODE = false;                       // flip to false for live
-const CREATE_CHECKOUT_FN = SB_URL + '/functions/v1/create-checkout';
-const ORDER_STATUS_FN    = SB_URL + '/functions/v1/order-status';
+const CREATE_CHECKOUT_FN = SB_URL + '/functions/v1/dd-create-checkout';
+const ORDER_STATUS_FN    = SB_URL + '/functions/v1/dd-order-status';
+const FN_HEADERS = { 'Content-Type':'application/json', 'Authorization':'Bearer '+SB_KEY, 'apikey':SB_KEY };
 
 async function submitOrder(){
   if(!state.photo){ alert(LANG==='hi'?'कृपया पहले अपनी फ़ोटो अपलोड करें। 🖼️':'Please upload your photo first. 🖼️'); goTo(1); return; }
@@ -1460,7 +1461,7 @@ async function submitOrder(){
   let checkoutUrl=null;
   try{
     const ret = location.origin + location.pathname + '?dd_return=1';
-    const resp = await fetch(CREATE_CHECKOUT_FN, { method:'POST', headers:{'Content-Type':'application/json'},
+    const resp = await fetch(CREATE_CHECKOUT_FN, { method:'POST', headers:FN_HEADERS,
       body: JSON.stringify({ test:DODO_TEST_MODE, order_id:oid, amount_inr:pb.total, name, email:order.email, phone, idols:order.idols, return_url:ret }) });
     const cj = await resp.json();
     checkoutUrl = cj.checkout_url;
@@ -1545,7 +1546,7 @@ async function confirmPayment(order, failedHint){
   if(failedHint) return;
   for(let i=0;i<18;i++){                        // ~36s of polling
     try{
-      const r = await fetch(ORDER_STATUS_FN + '?order_id=' + encodeURIComponent(order.oid));
+      const r = await fetch(ORDER_STATUS_FN + '?order_id=' + encodeURIComponent(order.oid), { headers:{ 'Authorization':'Bearer '+SB_KEY, 'apikey':SB_KEY } });
       const j = await r.json();
       if(j.status==='paid'){
         renderReceipt(order,'paid');
